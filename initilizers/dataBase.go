@@ -20,7 +20,7 @@ func ConnectToDB() {
 	}
 
 	// Migrate the schema
-	err = DB.AutoMigrate(&models.User{})
+	err = DB.AutoMigrate(&models.User{}, &models.Product{})
 	if err != nil {
 		log.Fatal("Failed to migrate database:", err)
 	}
