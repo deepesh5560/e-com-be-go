@@ -21,6 +21,7 @@ func CreateToken(email string) (string, error) {
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"email": email,
 		"exp":   time.Now().Add(time.Hour * 24 * 30).Unix(),
+		"role":  "admin",
 	})
 
 	tokenString, err := token.SignedString(secretKey)
@@ -53,9 +54,13 @@ func ValidateToken(c *gin.Context) {
 	var user models.User
 	initializers.DB.First(&user, "Email = ?", email)
 
+	role := claims["role"]
+
 	if user.ID == 0 {
 		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized"})
 		return
 	}
+	c.Set("role", role)
+
 	c.Next()
 }
