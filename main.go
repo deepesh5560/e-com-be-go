@@ -20,6 +20,7 @@ func main() {
 	r.GET("/product/get", conterollers.GetAllProducts)
 	r.GET("/product/detail/:id", conterollers.GetProductDtails)
 	r.DELETE("/product/remove/:id", middlewares.ValidateToken, conterollers.DeleteProduct)
+	r.POST("/cart/add", middlewares.ValidateToken, conterollers.DeleteProduct)
 
 	r.Run() // listen and serve on 0.0.0.0:8080 (for windows "localhost:8080")
 }

@@ -21,7 +21,7 @@ func AddProduct(c *gin.Context) {
 		return
 	}
 
-	product := models.Product{Name: body.Name, Price: body.Price, Stock: body.Stock}
+	product := models.Product{Name: body.Name, Price: float64(body.Price)}
 	result := initializers.DB.Create(&product)
 
 	if result.Error != nil {
@@ -48,11 +48,7 @@ func GetAllProducts(c *gin.Context) {
 }
 
 func GetProductDtails(c *gin.Context) {
-	role, exist := c.Get("role")
-	if !exist || role != "admin" {
-		c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "unauthorized"})
-		return
-	}
+
 	id := c.Param("id")
 	var product models.Product
 	result := initializers.DB.Where("id =?", id).First(&product)
